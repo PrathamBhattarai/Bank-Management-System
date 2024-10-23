@@ -7,7 +7,16 @@ import java.awt.event.*;
 import java.util.*;
 
 
-public class SignupTwo extends JFrame {
+public class SignupTwo extends JFrame implements ActionListener {
+    
+    JComboBox<String> religionComboBox, categoryComboBox, incomeComboBox,
+              qualificationComboBox, occupationComboBox;
+    
+    JTextField panTextField, adharTextField;
+    
+    JRadioButton yes1,no1,yes2,no2;
+    
+    JButton next;
     
     SignupTwo(){
         
@@ -37,7 +46,7 @@ public class SignupTwo extends JFrame {
         contentPanel2.add(religion);
         
         String[] items1= {"Hindu", "Mulsim", "Buddhist", "Jain", "Atheist"};
-        JComboBox<String> religionComboBox = new JComboBox<>(items1);
+        religionComboBox = new JComboBox<>(items1);
         religionComboBox.setBounds(400,185,400,30);
         religionComboBox.setFont(new Font("Osward", Font.BOLD, 20));
         contentPanel2.add(religionComboBox);
@@ -48,7 +57,7 @@ public class SignupTwo extends JFrame {
         contentPanel2.add(category);
         
         String[] items2 = {"General", "OBC", "SC", "ST", "Other"};
-        JComboBox<String> categoryComboBox = new JComboBox<>(items2);
+        categoryComboBox = new JComboBox<>(items2);
         categoryComboBox.setFont(new Font("Osward", Font.BOLD,20));
         categoryComboBox.setBounds(400,240,400,30);
         contentPanel2.add(categoryComboBox);
@@ -61,7 +70,7 @@ public class SignupTwo extends JFrame {
         contentPanel2.add(income);
         
         String[] items3 = {"Null", "< 1,50,000","< 2,50,000","< 5,00,000","10,00,000"};
-        JComboBox<String> incomeComboBox = new JComboBox<>(items3);
+        incomeComboBox = new JComboBox<>(items3);
         incomeComboBox.setFont(new Font("Osward", Font.BOLD,20));
         incomeComboBox.setBounds(400,300,400,30);
         contentPanel2.add(incomeComboBox);
@@ -72,7 +81,7 @@ public class SignupTwo extends JFrame {
         contentPanel2.add(qualification);
         
         String[] items4= {"Non-Graduate", "Graduate", "Post Graduate", "Doctrate", "others"};
-        JComboBox<String> qualificationComboBox = new JComboBox<>(items4);
+        qualificationComboBox = new JComboBox<>(items4);
         qualificationComboBox.setBounds(400,360,400,30);
         qualificationComboBox.setFont(new Font("Osward", Font.BOLD, 20));
         contentPanel2.add(qualificationComboBox);
@@ -83,7 +92,7 @@ public class SignupTwo extends JFrame {
         contentPanel2.add(occupation);
         
         String[] items5 = {"Salaried", "Self_Employed", "Bussiness", "Student", "Retired" , "Other"};
-        JComboBox<String> occupationComboBox = new JComboBox<>(items5);
+        occupationComboBox = new JComboBox<>(items5);
         occupationComboBox.setFont(new Font("Osward", Font.BOLD,20));
         occupationComboBox.setBounds(400,420,400,30);
         contentPanel2.add(occupationComboBox);
@@ -95,7 +104,7 @@ public class SignupTwo extends JFrame {
         pan.setBounds(100,450,200,100);
         contentPanel2.add(pan);
         
-        JTextField panTextField = new JTextField();
+        panTextField = new JTextField();
         panTextField.setFont(new Font("Osward", Font.BOLD,20));
         panTextField.setBounds(400,480,400,30);
         contentPanel2.add(panTextField);
@@ -105,7 +114,7 @@ public class SignupTwo extends JFrame {
         adharnumber.setBounds(100,510,200,100);
         contentPanel2.add(adharnumber);
         
-        JTextField adharTextField = new JTextField();
+        adharTextField = new JTextField();
         adharTextField.setFont(new Font("Osward", Font.BOLD,20));
         adharTextField.setBounds(400,540,400,30);
         contentPanel2.add(adharTextField);
@@ -115,12 +124,12 @@ public class SignupTwo extends JFrame {
         seniorCitizen.setBounds(100,570,200,100);
         contentPanel2.add(seniorCitizen);
         
-        JRadioButton yes1 = new JRadioButton("Yes");
+        yes1 = new JRadioButton("Yes");
         yes1.setFont(new Font("Osward", Font.BOLD,20));
         yes1.setBounds(400,600,100,30);
         contentPanel2.add(yes1);
         
-        JRadioButton no1 = new JRadioButton("No");
+        no1 = new JRadioButton("No");
         no1.setFont(new Font("Osward", Font.BOLD,20));
         no1.setBounds(600,600,100,30);
         contentPanel2.add(no1);
@@ -134,12 +143,12 @@ public class SignupTwo extends JFrame {
         existingAccount.setBounds(100,630,300,100);
         contentPanel2.add(existingAccount);
         
-        JRadioButton yes2 = new JRadioButton("Yes");
+        yes2 = new JRadioButton("Yes");
         yes2.setFont(new Font("Osward", Font.BOLD,20));
         yes2.setBounds(400,660,100,30);
         contentPanel2.add(yes2);
         
-        JRadioButton no2 = new JRadioButton("No");
+        no2 = new JRadioButton("No");
         no2.setFont(new Font("Osward", Font.BOLD,20));
         no2.setBounds(600,660,100,30);
         contentPanel2.add(no2);
@@ -147,6 +156,12 @@ public class SignupTwo extends JFrame {
         ButtonGroup accountgrp= new ButtonGroup();
         accountgrp.add(yes1);
         accountgrp.add(no1);
+        
+        next = new JButton("Next");
+        next.setFont(new Font("Raleway", Font.BOLD,24));
+        next.setBounds(700,850,100,30);
+        next.addActionListener(this);
+        contentPanel2.add(next);
         
         
         
@@ -167,6 +182,14 @@ public class SignupTwo extends JFrame {
     
     }
     
+    public void actionPerformed(ActionEvent ae){
+         if(ae.getSource() == next){
+             
+             panTextField.setText("");
+            
+         }
+            
+    }
     
     public static void main(String[] args){
         
