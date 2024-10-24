@@ -17,8 +17,10 @@ public class SignupTwo extends JFrame implements ActionListener {
     JRadioButton yes1,no1,yes2,no2;
     
     JButton next;
+    String formno;
     
-    SignupTwo(){
+    SignupTwo(String formno){
+        this.formno = formno;
         
         JPanel contentPanel2 = new JPanel();
         contentPanel2.setLayout(null);
@@ -185,15 +187,46 @@ public class SignupTwo extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae){
          if(ae.getSource() == next){
              
-             panTextField.setText("");
-            
+             String sreligion = (String) religionComboBox.getSelectedItem();
+             String scategory = (String) categoryComboBox.getSelectedItem();
+             String sincome = (String) incomeComboBox.getSelectedItem();
+             String squalification = (String) qualificationComboBox.getSelectedItem();
+             String soccupation = (String ) occupationComboBox.getSelectedItem();
+             String span = panTextField.getText();
+             String sadhar = adharTextField.getText();
+             String scitizen = null;
+             if(yes1.isSelected()){
+                scitizen = "Senior Citizen";
+             }else if(no1.isSelected()){
+                scitizen = "Not Senior Citizen";
+             }
+             String sexistingaccount = null;
+             if(yes2.isSelected()){
+                 sexistingaccount = "YES acount Exists";
+             }else if (no2.isSelected()){
+                 sexistingaccount = "NO account Doesnot Exist";
+             }
+             
+             try{
+                 if(span.equals("") || sadhar.equals("") || scitizen == null || sexistingaccount == null)
+                 {
+                    JOptionPane.showMessageDialog(null, "Pls fill out each and every boxes");
+                 } else {
+                     Conn c = new Conn();
+                     String query = "insert into signuptwo values('"+formno+"','"+sreligion+"','"+scategory+"','"+sincome+"','"+squalification+"','"+soccupation+"','"+span+"','"+sadhar+"','"+scitizen+"','"+sexistingaccount+"')";
+                    c.s.executeUpdate(query);
+                 }
+             
+             }catch (Exception e){
+                 System.out.println(e);
+             }
          }
             
     }
     
     public static void main(String[] args){
         
-        new SignupTwo();
+        new SignupTwo("");
     
     }
     }
