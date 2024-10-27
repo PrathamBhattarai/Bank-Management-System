@@ -38,7 +38,7 @@ public class Withdrawl extends JFrame implements ActionListener{
         amount.setBounds(170,350,320,25);
         contentPanel4.add(amount);
         
-        withdraw = new JButton("Deposit");
+        withdraw = new JButton("Withdraw");
         withdraw.setBounds(355,485,150,30);
         withdraw.addActionListener(this);
         image.add(withdraw);
@@ -66,13 +66,13 @@ public class Withdrawl extends JFrame implements ActionListener{
             String number = amount.getText();
             Date date = new Date();
             if(number.equals("")){
-                JOptionPane.showMessageDialog(null,"Please enter the amount you want to deposit");
+                JOptionPane.showMessageDialog(null,"Please enter the amount you want to withdraw");
                 }else {
                 try {
                     Conn conn = new Conn();
-                    String query = "insert into bank values('"+pinnumber+"','"+date+"','Deposit','"+number+"')";
+                    String query = "insert into bank values('"+pinnumber+"','"+date+"','Withdrawl','"+number+"')";
                     conn.s.executeUpdate(query);
-                    JOptionPane.showMessageDialog(null, "RS"+number+" Deposited Successfully");
+                    JOptionPane.showMessageDialog(null, "RS"+number+" withdraw Successfully");
                     setVisible(false);
                     new Transactions(pinnumber).setVisible(true);
                     
@@ -93,6 +93,7 @@ public class Withdrawl extends JFrame implements ActionListener{
     
     public static void main(String[] args){
     
+        new Withdrawl("");
     }
     
 }
