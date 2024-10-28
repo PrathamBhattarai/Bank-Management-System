@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.sql.*;
 
 
@@ -72,23 +73,26 @@ public class Withdrawl extends JFrame implements ActionListener{
                 try {
                     Conn conn = new Conn();
                     
-                    ResultSet rs = conn.s.executeQuery("select * from bank where pin = '"+pinnumber+"'");
+                     // Step 1: Calculate the current balance
+                    ResultSet rs = conn.s.executeQuery("SELECT balance FROM bank WHERE pin = '" + pinnumber + "' ORDER BY date DESC LIMIT 1");
                     int balance = 0;
-                    while(rs.next()){
-                        if(rs.getString("type").equals("Deposit")){
-                            balance += Integer.parseInt(rs.getString("amount"));
-                        }else{
-                            balance -= Integer.parseInt(rs.getString("amount"));
-                        }
+                    if (rs.next()) {
+                        balance = rs.getInt("balance");
                     }
-                    if (balance < Integer.parseInt(number)){
-                        JOptionPane.showMessageDialog(null,"Insufficient Balance");
-                        return;
-                        
+
+                    // Step 2: Check if there's enough balance to withdraw
+                    int withdrawAmount = Integer.parseInt(number);
+                    if (balance < withdrawAmount) {
+                    JOptionPane.showMessageDialog(null, "Insufficient Balance");
+                    return;
                     }
+
+                    // Step 3: Deduct withdrawal amount from balance
+                    balance -= withdrawAmount;
                     
+                
                     
-                    String query = "insert into bank values('"+pinnumber+"','"+date+"','Withdrawl','"+number+"')";
+                    String query = "insert into bank values('"+pinnumber+"','"+date+"','Withdrawl','"+number+"', '" + balance + "')";
                     conn.s.executeUpdate(query);
                     JOptionPane.showMessageDialog(null, "RS"+number+" withdraw Successfully");
                     setVisible(false);
@@ -96,7 +100,7 @@ public class Withdrawl extends JFrame implements ActionListener{
                     
                     
                 } catch (Exception e) {
-                    System.out.println(e);
+                    e.printStackTrace();
                 }
             }
            

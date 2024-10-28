@@ -85,7 +85,7 @@ public class FastCash extends JFrame implements ActionListener {
        try{
            String amount = ((JButton)ae.getSource()).getText().substring(3);
            Conn c = new Conn();
-           ResultSet rs = c.s.executeQuery("select * from bank where pin ='"+pinnumber+"'");
+           ResultSet rs = c.s.executeQuery("select * from bank where pin ='"+pinnumber+"' order by date desc limit 1");
            
            
            int balance = 0;
@@ -99,19 +99,23 @@ public class FastCash extends JFrame implements ActionListener {
            if (ae.getSource() != back && balance < Integer.parseInt(amount)){
                JOptionPane.showMessageDialog(null,"Insufficient Balance");
                return;
+           }else {
+               
+               int withdrawlAmount = Integer.parseInt(amount);
+               balance -= withdrawlAmount;
+               
+               Date date = new Date();
+               c.s.executeUpdate("insert into bank values('"+pinnumber+"','"+date+"','Withdrawl','"+amount+"','"+balance+"')");
+               JOptionPane.showMessageDialog(null,"Rs. "+amount+" Debited Successfully" );
+               
+               setVisible(false);
+               new Transactions(pinnumber).setVisible(true);
            }
            
            if(ae.getSource()== back){
                this.setVisible(false);
                new Transactions(pinnumber).setVisible(true);
                
-           }else {
-               Date date = new Date();
-               c.s.executeUpdate("insert into bank values('"+pinnumber+"','"+date+"','Withdrawl','"+amount+"')");
-               JOptionPane.showMessageDialog(null,"Rs. "+amount+" Debited Successfully" );
-               
-               setVisible(false);
-               new Transactions(pinnumber).setVisible(true);
            }
            
        }catch (Exception e){

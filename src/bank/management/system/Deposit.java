@@ -4,7 +4,8 @@ package bank.management.system;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Date;
+import java.sql.*;
 
 
 public class Deposit extends JFrame implements ActionListener {
@@ -70,8 +71,20 @@ public class Deposit extends JFrame implements ActionListener {
                 }else {
                 try {
                     Conn conn = new Conn();
-                    String query = "insert into bank values('"+pinnumber+"','"+date+"','Deposit','"+number+"')";
+                    
+                    ResultSet rs = conn.s.executeQuery("select balance from bank where pin ='"+pinnumber+"' order by date desc limit 1");
+                    int balance = 0;
+                    if(rs.next()){
+                        balance = rs.getInt("balance");
+                    }
+                    
+                    // Adding deposit amount to the balance
+                    int depositAmount = Integer.parseInt(number);
+                    balance += depositAmount;
+                    
+                    String query = "insert into bank values('"+pinnumber+"','"+date+"','Deposit','"+number+"', '" + balance + "')";
                     conn.s.executeUpdate(query);
+                    
                     JOptionPane.showMessageDialog(null, "RS"+number+" Deposited Successfully");
                     setVisible(false);
                     new Transactions(pinnumber).setVisible(true);
