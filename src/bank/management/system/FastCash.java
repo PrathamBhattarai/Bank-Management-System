@@ -84,39 +84,36 @@ public class FastCash extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae){
        try{
            String amount = ((JButton)ae.getSource()).getText().substring(3);
+           int withdrawlAmount = Integer.parseInt(amount);
            Conn c = new Conn();
-           ResultSet rs = c.s.executeQuery("select * from bank where pin ='"+pinnumber+"' order by date desc limit 1");
+           ResultSet rs = c.s.executeQuery("select balance from bank where pin ='"+pinnumber+"' order by date desc limit 1");
            
            
            int balance = 0;
-           while(rs.next()){
-               if(rs.getString("type").equals("Deposit")){
-                   balance += Integer.parseInt(rs.getString("amount"));
-               }else {
-                   balance -= Integer.parseInt(rs.getString("amount"));
-               }
-           }
-           if (ae.getSource() != back && balance < Integer.parseInt(amount)){
-               JOptionPane.showMessageDialog(null,"Insufficient Balance");
-               return;
-           }else {
-               
-               int withdrawlAmount = Integer.parseInt(amount);
-               balance -= withdrawlAmount;
-               
-               Date date = new Date();
-               c.s.executeUpdate("insert into bank values('"+pinnumber+"','"+date+"','Withdrawl','"+amount+"','"+balance+"')");
-               JOptionPane.showMessageDialog(null,"Rs. "+amount+" Debited Successfully" );
-               
-               setVisible(false);
-               new Transactions(pinnumber).setVisible(true);
+           if (rs.next()){
+               balance = rs.getInt("balance");
            }
            
            if(ae.getSource()== back){
                this.setVisible(false);
                new Transactions(pinnumber).setVisible(true);
+               return;
                
            }
+           if(balance < withdrawlAmount){
+               JOptionPane.showMessageDialog(null, "Insufficient Balance");
+               return;
+           
+           }
+           
+           balance -= withdrawlAmount;
+           Date date = new Date();
+           c.s.executeUpdate("insert into bank (pin,date,type,amount,balance) values ('"+pinnumber+"','"+date+"','Withdrawl','"+withdrawlAmount+"','"+balance+"')");
+           JOptionPane.showMessageDialog(null, "Rs. " + withdrawlAmount +" Debited Successfully ");
+           
+           setVisible(false);
+           new Transactions(pinnumber).setVisible(true);
+           
            
        }catch (Exception e){
            System.out.println(e);
